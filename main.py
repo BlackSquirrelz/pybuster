@@ -1,17 +1,23 @@
 import requests
 import sys
-
+import os
 # Only use for good, not bad.
 
 
 def load_wordlist(wordlist):
-    with open(wordlist) as f:
-        content = f.read().splitlines()
+    """Loading the a list of words to iterate / brute force on a given host."""
+    if not os.path.isfile(wordlist):
+        print(f"{wordlist} does not  exist. Check your spelling.")
+    else:
+        with open(wordlist) as f:
+            content = f.read().splitlines()
+
     subdirectories = [dir for dir in content]
     return subdirectories
 
 
 def pwn_site(host, subdir):
+    """Check if the site exists."""
     full_url = str(host) + "/" + str(subdir)
     r = requests.get(full_url)
     print(f"{full_url} - {r.status_code}")
